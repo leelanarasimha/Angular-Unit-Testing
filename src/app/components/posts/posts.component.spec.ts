@@ -1,3 +1,4 @@
+import { of } from 'rxjs';
 import { Post } from 'src/app/models/Post';
 import { PostsComponent } from './posts.component';
 
@@ -29,6 +30,27 @@ describe('Posts Component', () => {
   });
 
   describe('delete', () => {
-    it('should delete the selected Post from the posts', () => {});
+    beforeEach(() => {
+      mockPostService.deletePost.and.returnValue(of(true));
+      component.posts = POSTS;
+    });
+    it('should delete the selected Post from the posts', () => {
+      component.delete(POSTS[1]);
+
+      expect(component.posts.length).toBe(2);
+    });
+
+    it('should delete the actual selected Post in Posts', () => {
+      component.delete(POSTS[1]);
+
+      for (let post of component.posts) {
+        expect(post).not.toEqual(POSTS[1]);
+      }
+    });
+
+    it('should call the delete method in Post Service only once', () => {
+      component.delete(POSTS[1]);
+      expect(mockPostService.deletePost).toHaveBeenCalledTimes(1);
+    });
   });
 });
