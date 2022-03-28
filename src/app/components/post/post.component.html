@@ -1,0 +1,5 @@
+<div *ngIf="post">
+  <a [routerLink]="['detail', post.id]">{{ post.title }}</a>
+
+  <button (click)="onDeletePost($event)">Delete Post</button>
+</div>
