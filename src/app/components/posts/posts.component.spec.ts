@@ -1,11 +1,21 @@
+import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { Post } from 'src/app/models/Post';
+import { PostService } from 'src/app/services/Post/post.service';
 import { PostsComponent } from './posts.component';
+
+class mockPostService {
+  getPosts() {}
+
+  deletePost(post: Post) {
+    return of(true);
+  }
+}
 
 describe('Posts Component', () => {
   let POSTS: Post[];
   let component: PostsComponent;
-  let mockPostService: any;
+  let postService: any;
 
   beforeEach(() => {
     POSTS = [
@@ -25,13 +35,26 @@ describe('Posts Component', () => {
         title: 'title 3',
       },
     ];
-    mockPostService = jasmine.createSpyObj(['getPosts', 'deletePost']);
-    component = new PostsComponent(mockPostService);
+
+    //mockPostService = jasmine.createSpyObj(['getPosts', 'deletePost']);
+
+    TestBed.configureTestingModule({
+      providers: [
+        PostsComponent,
+        {
+          provide: PostService,
+          useClass: mockPostService,
+        },
+      ],
+    });
+
+    component = TestBed.inject(PostsComponent);
+    postService = TestBed.inject(PostService);
   });
 
   describe('delete', () => {
     beforeEach(() => {
-      mockPostService.deletePost.and.returnValue(of(true));
+      //postService.deletePost.and.returnValue(of(true));
       component.posts = POSTS;
     });
     it('should delete the selected Post from the posts', () => {
@@ -49,8 +72,9 @@ describe('Posts Component', () => {
     });
 
     it('should call the delete method in Post Service only once', () => {
+      spyOn(postService, 'deletePost').and.callThrough();
       component.delete(POSTS[1]);
-      expect(mockPostService.deletePost).toHaveBeenCalledTimes(1);
+      expect(postService.deletePost).toHaveBeenCalledTimes(1);
     });
   });
 });
