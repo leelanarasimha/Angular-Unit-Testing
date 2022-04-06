@@ -1,5 +1,6 @@
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { Post } from 'src/app/models/Post';
 import { PostService } from 'src/app/services/Post/post.service';
@@ -58,6 +59,14 @@ describe('Posts Component', () => {
     mockPostService.getPosts.and.returnValue(of(POSTS));
     fixture.detectChanges();
     expect(component.posts.length).toBe(3);
+  });
+
+  it('should create one post child Element for each post ', () => {
+    mockPostService.getPosts.and.returnValue(of(POSTS));
+    fixture.detectChanges();
+    const debugElement = fixture.debugElement;
+    const postsElement = debugElement.queryAll(By.css('.posts'));
+    expect(postsElement.length).toBe(POSTS.length);
   });
 
   describe('delete', () => {
