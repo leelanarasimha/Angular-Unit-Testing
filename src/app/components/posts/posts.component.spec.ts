@@ -59,6 +59,20 @@ describe('Posts Component', () => {
     expect(postComponentDEs.length).toEqual(POSTS.length);
   });
 
+  it('should check whether exact post is sending to PostComponent', () => {
+    mockPostService.getPosts.and.returnValue(of(POSTS));
+    fixture.detectChanges();
+    const postComponentDEs = fixture.debugElement.queryAll(
+      By.directive(PostComponent)
+    );
+
+    for (let i = 0; i < postComponentDEs.length; i++) {
+      let postComponentInstance = postComponentDEs[i]
+        .componentInstance as PostComponent;
+      expect(postComponentInstance.post.title).toEqual(POSTS[i].title);
+    }
+  });
+
   it('should set posts from the service directly', () => {
     mockPostService.getPosts.and.returnValue(of(POSTS));
     fixture.detectChanges();
