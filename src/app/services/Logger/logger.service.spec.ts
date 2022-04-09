@@ -1,10 +1,15 @@
+import { TestBed } from '@angular/core/testing';
 import { LoggerService } from './logger.service';
 
 describe('LoggerService', () => {
   let service: LoggerService;
 
   beforeEach(() => {
-    service = new LoggerService();
+    TestBed.configureTestingModule({
+      providers: [LoggerService],
+    });
+
+    service = TestBed.inject(LoggerService);
   });
 
   it('should not have any messages at starting', () => {
