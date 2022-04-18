@@ -127,5 +127,22 @@ describe('Posts Component', () => {
         expect(component.delete).toHaveBeenCalledWith(POSTS[i]);
       }
     });
+
+    it('should call the delete method when the delete event is emitted in Post Component', () => {
+      spyOn(component, 'delete');
+      mockPostService.getPosts.and.returnValue(of(POSTS));
+      fixture.detectChanges();
+
+      let postComponentDEs = fixture.debugElement.queryAll(
+        By.directive(PostComponent)
+      );
+
+      for (let i = 0; i < postComponentDEs.length; i++) {
+        (postComponentDEs[i].componentInstance as PostComponent).delete.emit(
+          POSTS[i]
+        );
+        expect(component.delete).toHaveBeenCalledWith(POSTS[i]);
+      }
+    });
   });
 });
