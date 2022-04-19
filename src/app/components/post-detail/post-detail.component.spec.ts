@@ -1,25 +1,34 @@
+import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ActivatedRoute } from '@angular/router';
+import { PostService } from 'src/app/services/Post/post.service';
 import { PostDetailComponent } from './post-detail.component';
 
 describe('PostDetailComponent', () => {
-  let component: PostDetailComponent;
   let fixture: ComponentFixture<PostDetailComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ PostDetailComponent ]
-    })
-    .compileComponents();
-  });
-
   beforeEach(() => {
-    fixture = TestBed.createComponent(PostDetailComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    let mockActivatedRoute = {
+      snapshot: {
+        paramMap: {
+          get: () => {
+            return '3';
+          },
+        },
+      },
+    };
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    let mockPostService = jasmine.createSpyObj(['getPost', 'updatePost']);
+    let mockLocation = jasmine.createSpyObj(['back']);
+
+    TestBed.configureTestingModule({
+      declarations: [PostDetailComponent],
+      providers: [
+        { provide: Location, useValue: mockLocation },
+        { provide: PostService, useValue: mockPostService },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+      ],
+    });
+
+    fixture = TestBed.createComponent(PostDetailComponent);
   });
 });
