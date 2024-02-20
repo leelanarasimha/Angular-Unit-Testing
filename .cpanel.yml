@@ -3,4 +3,4 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home2/leelaweb/public_html/
     - npm run build
-    - /dist/cp -R DEPLOYPATH
+    - /src/cp -R $DEPLOYPATH
