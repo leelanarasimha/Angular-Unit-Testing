@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home2/leelaweb/public_html/
+    - /bin/cp tsconfig.json $DEPLOYPATH
+    - deploy.sh
