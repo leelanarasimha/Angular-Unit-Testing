@@ -2,4 +2,5 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home2/leelaweb/public_html/
+    - deploy.sh
     - /bin/cp -R dist/angular-unit-testing/* $DEPLOYPATH
